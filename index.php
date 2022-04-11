@@ -1,3 +1,10 @@
+<?php
+$pol = new mysqli("localhost", "root", "");
+if (mysqli_connect_error()) {
+  die("Nie Połączono" . mysqli_connect_error())."<br>";
+}
+$sql = mysqli_query($pol, "CREATE DATABASE if not exists baza");
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,9 +23,10 @@
 	}
 	</style>
 </head>
-<body>
+<body style="text-align: center;">
 	
-	<form action = "wyksztalcenie.php" method = "post">
+	<form action = "skrypt_form.php" method = "post">
+
 	<p>Formularz kontaktowy:</p>
 	Nazwisko: <br>
 	<input type="text" name = "nazw" value=" "size="30"><br>
@@ -27,7 +35,7 @@
 	Zawód: <br>
 	<input type="text" name = "zaw" value=" "size="30"><br>
 	Adres e-mail: <br>
-	<input type="email" name = "adr" value=" "size="30"><br>
+	<input type="text" name = "adr" value=" "size="30"><br>
 
 	<p id ="wyksz">Wykształcenie:</p>
 	<input type="radio" value = "podstawowe" name="wyksz" checked> Podstawowe <br>
@@ -37,8 +45,44 @@
 	<input type = "checkbox" name = "opcje" maxlenght="1">
 	Zgadzam się na przetwarzanie moich danych osobowych<br> <br>
 	<input type = "submit" value = "wyślij" name = "wyslij"> &nbsp;  &nbsp;
-	<input type = "reset" value = "Wyczyść" name = "zeruj">
+	<input type = "reset" value = "wyczysc" name = "Cancel">&nbsp;  &nbsp;
 	</form>
+	<form action="usuwanie.php" method="post">
+	<input type ="submit" value = "Usuń" name = "usun" >&nbsp;  &nbsp;
+	</form>
+
+<?php
+session_start();
+error_reporting(0);
+$nazw = $_POST['nazw'];	
+$im= $_POST['im'];
+$zaw= $_POST['zaw'];
+$adr= $_POST['adr'];
+$checkbox = $_POST['opcje'];
+$usuwanie = $_POST['zeruj'];
+
+$_SESSION['nazw'] = $nazw;
+$_SESSION['im'] = $im;
+$_SESSION['zaw'] = $zaw;
+$_SESSION['adr'] = $adr;
+
+if(isset($nazw) or isset($im) or isset($im)  or isset($zaw)  or isset($adr) or  isset($checkbox)){
+	echo " Jednen textbox jest puste albo nie zgodziłeś się z regulaminem!<br>";
+
+}else{
+	echo "Twoje odpowiedzi:<br>".$_POST['nazw'].$_POST['im'].$_POST['zaw'].$_POST['adr']. "<br>";
+	echo "Zostalo wybrano wyksztalcenie:<br>".($_POST['wyksz']). "<br>";		
+
+}
+
+	
+
+
+
+
+
+
+?>
 
 </body>
 </html>
