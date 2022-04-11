@@ -1,3 +1,4 @@
+
 <?php
 error_reporting(1);
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
@@ -11,7 +12,6 @@ if (mysqli_connect_error()) {
   die("Nie Połączono" . mysqli_connect_error())."<br>";
 }
 echo "Połączono! <br>";
-//$tabelka =  mysqli_query($pol, "SELECT 1 FROM dane LIMIT 1" );
 $sql  = mysqli_query($pol, "create table if not exists dane (
   imie VARCHAR(20),
   nazwisko VARCHAR(20),
@@ -30,3 +30,5 @@ Values ('$im', '$nazw','$zaw','$adr', '$checkbox')");
 
 $pol->close()
 ?>
+<form action = "index.php" method = "post">
+<input type = "submit" value = "wyjdz" name = "wyjdz">
