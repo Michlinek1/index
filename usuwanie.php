@@ -1,49 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Usuwanie</title>
+  Co chcesz usunac? Wpisz ID <br>
+  <form action = "" method = "post">
+	<input type="text" name = "nazw" value=" "size="30"><br>
+  <input type="submit" value = "Usuwanie" name = "usun" >
+  </form>
 <?php
-error_reporting(0);
+$textbox1 = $_POST['nazw'];	
+$przycisk = $_POST['usun'];
+error_reporting(1);
 $pol = new mysqli("localhost", "root", "", "baza");
 if (mysqli_connect_error()) {
   die("Nie Połączono" . mysqli_connect_error())."<br>";
 }
-echo "Połączono! <br>";
-$sql = "SELECT imie, nazwisko, zawod, mail, wyksztalcenie FROM dane";
+
+$sql = "SELECT ID,imie, nazwisko, zawod, mail, wyksztalcenie FROM dane";
 $result = $pol->query($sql);
+
+
 
 if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
-      echo "Imie: " . $row["imie"]. " ".  "Nazwisko: " . $row["nazwisko"]. " " . "Zawód:". $row["zawod"]." ". "Mail:".$row["mail"]. " ". "Wykształcenie"." ".$row["wyksztalcenie"]."<br>";
+      echo "ID" . $row["ID"]." "."Imie: " . $row["imie"]. " ".  "Nazwisko: " . $row["nazwisko"]. " " . "Zawód:". $row["zawod"]." ". "Mail:".$row["mail"]. " ". "Wykształcenie"." ".$row["wyksztalcenie"]."<br>";
     }
  } else {
-    echo "Nie ma żadnych danych! - stwórz tabelkę ";
+    header("Location: index.php");
  }
-
+ echo $result->num_rows."<br>";
 
 
 
 
 
 ?>
-<form action = "index.php" method = "post">
-<input type = "submit" value = "wyjdz" name = "wyjdz">
-</form>
-
-
-<input type="submit" value = "Usuwanie" name = "usun" 
-
-
-<?php
-
-function usunWszystko($pol){
-    mysqli_query($pol, "DROP TABLE dane");
-}
-
-if(isset($_POST["usun"])){
-    usunWszystko($pol);
-    echo "Tabela została usunięta!";
-}
-
-
-
-?>
-
 
 
