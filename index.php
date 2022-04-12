@@ -44,12 +44,11 @@ $sql = mysqli_query($pol, "CREATE DATABASE if not exists baza");
 
 	<input type = "checkbox" name = "opcje" maxlenght="1">
 	Zgadzam się na przetwarzanie moich danych osobowych<br> <br>
-	<input type = "submit" value = "wyślij" name = "wyslij"> &nbsp;  &nbsp;
-	<input type = "reset" value = "wyczysc" name = "Cancel">&nbsp;  &nbsp;
+	<input type = "submit" value = "wyślij" name = "wyslij"> &nbsp;  &nbsp; <br>  <br>
+	<input type = "reset" value = "wyczysc" name = "Cancel">&nbsp;  &nbsp; <br> <br>
 	</form>
-	<form action="usuwanie.php" method="post">
-	<input type ="submit" value = "Usuń" name = "usun" >&nbsp;  &nbsp;
-	</form>
+
+	<input type ="submit" value = "Usuń" name = "usun" onclick="location.href = 'usuwanie.php'" >&nbsp;  &nbsp; <br> <br>
 
 <?php
 session_start();
@@ -68,10 +67,7 @@ $_SESSION['adr'] = $adr;
 
 if(isset($nazw) or isset($im) or isset($im)  or isset($zaw)  or isset($adr) or  isset($checkbox)){
 	echo " Jednen textbox jest puste albo nie zgodziłeś się z regulaminem!<br>";
-
-}else{
-	echo "Twoje odpowiedzi:<br>".$_POST['nazw'].$_POST['im'].$_POST['zaw'].$_POST['adr']. "<br>";
-	echo "Zostalo wybrano wyksztalcenie:<br>".($_POST['wyksz']). "<br>";		
+	header("Location: index.php");
 
 }
 
