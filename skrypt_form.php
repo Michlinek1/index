@@ -4,7 +4,7 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Dodawanie</title>
+	<title>Usuwanie</title>
 <?php
 error_reporting(1);
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
@@ -23,7 +23,7 @@ $sql  = mysqli_query($pol, "create table if not exists dane (
   imie VARCHAR(20)  NOT NULL,
   nazwisko VARCHAR(20)  NOT NULL,
   zawod VARCHAR(20)  NOT NULL,
-  mail VARCHAR(20)  NOT NULL,
+  mail VARCHAR(40)  NOT NULL,
   wyksztalcenie VARCHAR(20)  NOT NULL,
   PRIMARY KEY (ID)
 )");
@@ -32,10 +32,12 @@ $sql  = mysqli_query($pol, "create table if not exists dane (
 if($checkbox == "on"){
   mysqli_query($pol, "INSERT INTO dane(imie, nazwisko, zawod, mail, wyksztalcenie)
   Values ('$im', '$nazw','$zaw','$adr', 'tak')");
+  echo "Zapisano!";
   
 }else{
   $sqldodawanie = mysqli_query($pol, "INSERT INTO dane(imie, nazwisko, zawod, mail, wyksztalcenie)
 Values ('$im', '$nazw','$zaw','$adr', 'nie')");
+ echo "Zapisano!";
 }
 
 
