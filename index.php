@@ -25,7 +25,7 @@ $sql = mysqli_query($pol, "CREATE DATABASE if not exists baza");
 </head>
 <body style="text-align: center;">
 	
-	<form action = "skrypt_form.php" method = "post">
+	<form action = "" method = "post">
 
 	<p>Formularz kontaktowy:</p>
 	Nazwisko: <br>
@@ -44,7 +44,7 @@ $sql = mysqli_query($pol, "CREATE DATABASE if not exists baza");
 
 	<input type = "checkbox" name = "opcje" maxlenght="1">
 	Zgadzam się na przetwarzanie moich danych osobowych<br> <br>
-	<input type = "submit" value = "wyślij" name = "wyslij"> &nbsp;  &nbsp; <br>  <br>
+	<input type = "submit" value = "wyślij" name = "wyslij" > &nbsp;  &nbsp; <br>  <br>
 	<input type = "reset" value = "wyczysc" name = "Cancel">&nbsp;  &nbsp; <br> <br>
 	</form>
 
@@ -64,13 +64,38 @@ $_SESSION['nazw'] = $nazw;
 $_SESSION['im'] = $im;
 $_SESSION['zaw'] = $zaw;
 $_SESSION['adr'] = $adr;
-
-if(isset($nazw) or isset($im) or isset($im)  or isset($zaw)  or isset($adr) or  isset($checkbox)){
-	echo " Jednen textbox jest puste albo nie zgodziłeś się z regulaminem!<br>";
-	header("Location: index.php");
-
+$pol = new mysqli("localhost", "root", "", "baza");
+if (mysqli_connect_error()) {
+  die("Nie Połączono" . mysqli_connect_error())."<br>";
 }
-
+$sql  = mysqli_query($pol, "create table if not exists dane (
+	ID int NOT NULL  AUTO_INCREMENT,
+	imie VARCHAR(20)  NOT NULL,
+	nazwisko VARCHAR(20)  NOT NULL,
+	zawod VARCHAR(20)  NOT NULL,
+	mail VARCHAR(40)  NOT NULL,
+	wyksztalcenie VARCHAR(20)  NOT NULL,
+	PRIMARY KEY (ID)
+  )");
+  
+if($_POST['wyslij']){
+	if(!empty($nazw) && !empty($im) && !empty($zaw) && !empty($adr) && !empty($checkbox)){
+		if($checkbox == "on"){
+			mysqli_query($pol, "INSERT INTO dane(imie, nazwisko, zawod, mail, wyksztalcenie)
+			Values ('$im', '$nazw','$zaw','$adr', 'tak')");
+			echo "Zapisano! <br>";
+			echo "Twoje odpowiedzi:<br>".$_POST['nazw']." " .$_POST['im']." " .$_POST['zaw']." " .$_POST['adr'];
+			
+		  }else{
+			$sqldodawanie = mysqli_query($pol, "INSERT INTO dane(imie, nazwisko, zawod, mail, wyksztalcenie)
+			Values ('$im', '$nazw','$zaw','$adr', 'nie')");
+		   echo "Zapisano! <br>";
+		   echo "Twoje odpowiedzi:<br>".$_POST['nazw'].$_POST['im'].$_POST['zaw'].$_POST['adr'];
+		  }
+	}else{
+		echo "Wypełnij wszystkie pola";
+	}
+}
 	
 
 
