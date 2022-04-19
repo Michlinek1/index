@@ -14,9 +14,7 @@
   <body>
 </html>
 <?php
-$textbox1 = $_POST['nazw'];	
-$przycisk = $_POST['usun'];
-error_reporting(1);
+$usuwanie = $_POST['nazw'];
 $pol = new mysqli("localhost", "root", "", "baza");
 if (mysqli_connect_error()) {
   die("Nie Połączono" . mysqli_connect_error())."<br>";
@@ -36,10 +34,11 @@ header("Location: index.php");
  }
  echo $result->num_rows."<br>";
 
-if(isset($przycisk)){
-  mysqli_query($pol, "DELETE FROM dane where id = $textbox1");
+if($_POST['usun']){
+  mysqli_query($pol, "DELETE FROM dane where id = $usuwanie");
+  header("Location: index.php");
 
-}elseif($result->num_rows  < $textbox1){
+}elseif($result->num_rows  <! $textbox1){
   echo "Taki record nie istnieje!";
 }
 
