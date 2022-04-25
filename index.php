@@ -46,9 +46,19 @@ $sql = mysqli_query($pol, "CREATE DATABASE if not exists baza");
 	Zgadzam się na przetwarzanie moich danych osobowych<br> <br> </label>
 	<input type = "submit" value = "wyślij" name = "wyslij" > &nbsp;  &nbsp; <br>  <br>
 	<input type = "reset" value = "wyczysc" name = "Cancel">&nbsp;  &nbsp; <br> <br>
-	</form>
-
-	<input type ="submit" value = "Usuń" name = "usun" onclick="location.href = 'usuwanie.php'" >&nbsp;  &nbsp; <br> <br>
+	
+		<select name = "jezyki[]" > 
+			<option value = "Język angielski">Język Angielski</option>
+			<option value = "Język hiszpanski">Język Hiszpanski</option>
+			<option value = "Język wloski">Język Włoski</option>
+			<option value = "Język rosysjki">Język Rosysjki</option>
+			<option value = "Język francuski">Język Francusk</option>
+			<option value = "Język niemiecki">Język Niemiecki</option>
+		</select><br>
+		<br>
+</form>
+<input type ="submit" value = "Usuń" name = "usun" onclick="location.href = 'usuwanie.php'" >&nbsp;  &nbsp; <br> <br>
+	
 
 <?php
 session_start();
@@ -60,6 +70,7 @@ $adr= $_POST['adr'];
 $checkbox = $_POST['opcje'];
 $usuwanie = $_POST['zeruj'];
 $opcje = $_POST['wyksz'];
+$jezyk = $_POST['jezyki'] ;
 
 $_SESSION['nazw'] = $nazw;
 $_SESSION['im'] = $im;
@@ -77,37 +88,49 @@ $sql  = mysqli_query($pol, "create table if not exists dane (
 	zawod VARCHAR(20)  NOT NULL,
 	mail VARCHAR(40)  NOT NULL,
 	wyksztalcenie VARCHAR(20)  NOT NULL,
+	jezyki VARCHAR(20)  NOT NULL,
 	CzyZaakceptowano VARCHAR(20)  NOT NULL,
 	PRIMARY KEY (ID)
   )");
+
+  
+  
+$sql = "SELECT ID,imie, nazwisko, zawod, mail, wyksztalcenie FROM dane";
+$result = $pol->query($sql);
+
+
+
+
+	
   
 if($_POST['wyslij']){
-	if(!empty($nazw) && !empty($im) && !empty($zaw) && !empty($adr) && $checkbox == "on" ){
-			for ($i = 0; $i <= strlen($nazw)-1; $i++){
-			if(is_numeric($nazw[$i])){
-				echo "<br>Nazwisko lub imie nie może mieć liczbę!<br>";
-				break;
-			}
+	if(!empty($nazw) && !empty($im) && !empty($zaw) && !empty($adr) && !empty($jezyk) && $checkbox == "on"  ){
 			if($checkbox == "on"){
-				mysqli_query($pol, "INSERT INTO dane(imie, nazwisko, zawod, mail, wyksztalcenie, CzyZaakceptowano)
-				Values ('$im', '$nazw','$zaw','$adr','$opcje', 'tak')");
-				echo "Zapisano! <br>";
-				echo "Twoje odpowiedzi:<br>".$_POST['nazw']." " .$_POST['im']." " .$_POST['zaw']." " .$_POST['adr']." ". $_POST['wyksz'];
-				
-			}else{
-				$sqldodawanie = mysqli_query($pol, "INSERT INTO dane(imie, nazwisko, zawod, mail, wyksztalcenie, CzyZaakceptowano)
-				Values ('$im', '$nazw','$zaw','$adr','$opcje', 'nie')");
-			   echo "Zapisano! <br>";
-			   echo "Twoje odpowiedzi:<br>".$_POST['nazw']." " .$_POST['im']." " .$_POST['zaw']." " .$_POST['adr']." " .$_POST['wyksz'];
-			  }
+				foreach($jezyk as $wartosc){
+					mysqli_query($pol, "INSERT INTO dane(imie, nazwisko, zawod, mail, wyksztalcenie, jezyki, CzyZaakceptowano)
+					Values ('$im', '$nazw','$zaw','$adr','$opcje', '$wartosc', 'tak')");
+					echo "Twoje odpowiedzi:<br>".$_POST['nazw']." " .$_POST['im']." " .$_POST['zaw']." " .$_POST['adr']." ". $_POST['wyksz']." ".$wartosc."<br>";
+				}
+				if ($result->num_rows > 0) {
+					while($row = $result = $nazw && $im && $zaw && $adr && $jezyk && $checkbox == "on") {
+					  echo "Taki rekord juz istnieje w bazie danych";
+					}				
+			
+				}
+					
+
 			
 			
 		}
+
+		
 	}else{
 		echo "Wypełnij wszystkie pola";
 	}
 }
-	
+
+
+
 
 
 
